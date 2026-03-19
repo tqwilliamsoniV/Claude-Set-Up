@@ -252,6 +252,30 @@
     }
     .checklist li.done .cb-label { text-decoration: line-through; color: #9CA3AF; }
 
+    /* ── CHECK ALL BUTTON ── */
+    .check-all-wrap { margin: 10px 0 4px; }
+    .check-all-btn {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-lt);
+      padding: 8px 18px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 13px; font-weight: 800;
+      cursor: pointer;
+      transition: all .2s;
+    }
+    .check-all-btn:hover {
+      border-color: var(--green);
+      color: var(--green-dark);
+      background: #F0FDF4;
+    }
+    .check-all-btn.all-done {
+      border-color: var(--green);
+      color: var(--green-dark);
+      background: #F0FDF4;
+    }
+
     /* ── INFO BOXES ── */
     .info-box {
       border-radius: 10px;
@@ -861,6 +885,16 @@ function renderSteps() {
     const tipHtml = step.tip
       ? `<div class="info-box tip">${step.tip}</div>` : '';
 
+    // ── check all button ──
+    const allChecked = done === total;
+    const checkAllHtml = `
+      <div class="check-all-wrap">
+        <button class="check-all-btn ${allChecked ? 'all-done' : ''}"
+                onclick="checkAllTasks('${step.id}')">
+          ${allChecked ? '✓ All steps complete' : '✓ Mark all as complete'}
+        </button>
+      </div>`;
+
     card.innerHTML = `
       <div class="step-header" onclick="toggleStep('${step.id}')">
         <div class="step-num">${numIcon}</div>
@@ -876,6 +910,7 @@ function renderSteps() {
       <div class="step-body">
         <div class="step-desc">${step.desc}</div>
         ${checklistHtml}
+        ${checkAllHtml}
         ${folderHtml}
         ${codeHtml}
         ${linksHtml}
@@ -892,6 +927,31 @@ function renderSteps() {
 // ╔══════════════════════════════════════════════════════════════╗
 // ║  INTERACTIONS                                                ║
 // ╚══════════════════════════════════════════════════════════════╝
+function checkAllTasks(stepId) {
+  const step = STEPS.find(s => s.id === stepId);
+  const allDone = step.tasks.every(t => localStorage.getItem(t.id) === 'true');
+  const newState = !allDone;
+
+  step.tasks.forEach(t => {
+    localStorage.setItem(t.id, String(newState));
+    const cb  = document.getElementById(t.id);
+    const box = cb.nextElementSibling;
+    cb.checked    = newState;
+    box.textContent = newState ? '✓' : '';
+    document.getElementById('li_' + t.id).classList.toggle('done', newState);
+  });
+
+  // update the button itself
+  const btn = document.querySelector(`#${stepId} .check-all-btn`);
+  if (btn) {
+    btn.textContent = newState ? '✓ All steps complete' : '✓ Mark all as complete';
+    btn.classList.toggle('all-done', newState);
+  }
+
+  updateStepCard(stepId);
+  updateGlobalProgress();
+}
+
 function toggleStep(id) {
   const card = document.getElementById(id);
   const isOpen = card.classList.contains('open');
