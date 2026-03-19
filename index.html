@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claude Setup for Teachers | Interactive Checklist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --navy:        #1B3A6E;
+      --navy-light:  #2D5AA0;
+      --orange:      #F5821F;
+      --orange-lt:   #FF9A4A;
+      --green:       #22C55E;
+      --green-dark:  #16A34A;
+      --bg:          #EEF2F7;
+      --white:       #FFFFFF;
+      --text:        #1E293B;
+      --text-lt:     #64748B;
+      --border:      #E2E8F0;
+    }
+
+    body {
+      font-family: 'Nunito', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── STICKY HEADER ── */
+    .site-header {
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 24px rgba(0,0,0,0.28);
+    }
+    .header-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand-badge {
+      background: var(--orange);
+      color: white;
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 24px; font-weight: 900;
+      flex-shrink: 0;
+    }
+    .brand-text h1 { font-size: 18px; font-weight: 900; color: white; line-height: 1.2; }
+    .brand-text p  { font-size: 11px; color: rgba(255,255,255,.6); font-weight: 600; }
+
+    .header-progress { display: flex; align-items: center; gap: 14px; }
+    .progress-ring-wrap { position: relative; width: 54px; height: 54px; }
+    .progress-ring-wrap svg { transform: rotate(-90deg); display: block; }
+    .ring-bg   { fill: none; stroke: rgba(255,255,255,.18); stroke-width: 4.5; }
+    .ring-fill {
+      fill: none;
+      stroke: var(--orange);
+      stroke-width: 4.5;
+      stroke-linecap: round;
+      stroke-dasharray: 138.23;
+      stroke-dashoffset: 138.23;
+      transition: stroke-dashoffset .5s ease;
+    }
+    .ring-label {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 13px; font-weight: 900; color: white;
+    }
+    .progress-stats { text-align: right; }
+    .progress-count { font-size: 22px; font-weight: 900; color: var(--orange); line-height: 1; }
+    .progress-label { font-size: 11px; color: rgba(255,255,255,.6); font-weight: 600; }
+
+    /* ── HERO ── */
+    .hero {
+      background: linear-gradient(155deg, #0f2650 0%, #1B3A6E 45%, #1d52a3 100%);
+      padding: 64px 24px 72px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 75% 20%, rgba(245,130,31,.18) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .hero-content { position: relative; max-width: 720px; margin: 0 auto; }
+    .hero-badge {
+      display: inline-block;
+      background: var(--orange);
+      color: white;
+      font-size: 11px; font-weight: 800;
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 22px;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+    }
+    .hero h2 {
+      font-size: 42px; font-weight: 900;
+      color: white; line-height: 1.2;
+      margin-bottom: 18px;
+    }
+    .hero h2 em { color: var(--orange); font-style: normal; }
+    .hero p {
+      font-size: 17px; color: rgba(255,255,255,.87);
+      line-height: 1.75; margin-bottom: 30px;
+    }
+    .hero-credit {
+      display: inline-block;
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 14px;
+      padding: 14px 24px;
+      text-align: left;
+    }
+    .hero-credit p { font-size: 14px; color: rgba(255,255,255,.9); margin: 0; }
+    .hero-credit a { color: var(--orange); font-weight: 800; text-decoration: none; }
+    .hero-credit a:hover { text-decoration: underline; }
+
+    /* ── MAIN ── */
+    .main { max-width: 960px; margin: 0 auto; padding: 40px 24px 80px; }
+
+    /* ── COMPLETION BANNER ── */
+    .completion-banner {
+      display: none;
+      background: linear-gradient(135deg, var(--green), var(--green-dark));
+      border-radius: 18px;
+      padding: 40px;
+      text-align: center;
+      margin-bottom: 32px;
+      box-shadow: 0 8px 40px rgba(34,197,94,.3);
+    }
+    .completion-banner.show { display: block; animation: popIn .4s ease; }
+    .completion-banner .trophy { font-size: 56px; margin-bottom: 12px; }
+    .completion-banner h2 { font-size: 28px; font-weight: 900; color: white; margin-bottom: 8px; }
+    .completion-banner p  { font-size: 16px; color: rgba(255,255,255,.9); }
+
+    /* ── STEP CARDS ── */
+    .step-card {
+      background: var(--white);
+      border-radius: 18px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 10px rgba(27,58,110,.07);
+      border: 2.5px solid transparent;
+      overflow: hidden;
+      transition: border-color .3s, box-shadow .3s;
+    }
+    .step-card:hover { box-shadow: 0 4px 24px rgba(27,58,110,.13); }
+    .step-card.completed  { border-color: var(--green); }
+    .step-card.in-progress { border-color: var(--orange); }
+
+    .step-header {
+      padding: 18px 22px;
+      display: flex; align-items: center; gap: 14px;
+      cursor: pointer;
+      user-select: none; -webkit-user-select: none;
+    }
+    .step-header:hover { background: #FAFBFF; }
+
+    .step-num {
+      width: 48px; height: 48px;
+      border-radius: 12px;
+      background: var(--navy);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 900;
+      flex-shrink: 0;
+      transition: background .3s;
+    }
+    .step-card.completed  .step-num { background: var(--green); }
+    .step-card.in-progress .step-num { background: var(--orange); }
+
+    .step-info { flex: 1; min-width: 0; }
+    .step-title { font-size: 16px; font-weight: 800; color: var(--navy); line-height: 1.3; }
+    .step-meta  { font-size: 13px; color: var(--text-lt); margin-top: 2px; }
+
+    .step-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+    .step-pill {
+      background: #F1F5F9;
+      border-radius: 20px;
+      padding: 4px 13px;
+      font-size: 13px; font-weight: 700; color: var(--text-lt);
+      white-space: nowrap;
+    }
+    .step-card.completed  .step-pill { background: #DCFCE7; color: var(--green-dark); }
+    .step-card.in-progress .step-pill { background: #FEF3C7; color: #B45309; }
+
+    .chevron { font-size: 14px; color: var(--text-lt); transition: transform .3s; }
+    .step-card.open .chevron { transform: rotate(180deg); }
+
+    /* ── STEP BODY ── */
+    .step-body { display: none; padding: 4px 22px 22px; }
+    .step-card.open .step-body { display: block; }
+
+    .step-desc {
+      background: #F8FAFF;
+      border-left: 3px solid var(--navy);
+      border-radius: 0 10px 10px 0;
+      padding: 14px 16px;
+      font-size: 14px; line-height: 1.75;
+      color: #475569;
+      margin-bottom: 18px;
+    }
+    .step-desc a { color: var(--navy); font-weight: 700; }
+
+    /* ── CHECKLIST ── */
+    .checklist { list-style: none; }
+    .checklist li {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .checklist li:last-child { border-bottom: none; }
+
+    .cb-wrap { position: relative; flex-shrink: 0; margin-top: 1px; }
+    .cb-wrap input[type="checkbox"] {
+      opacity: 0; position: absolute; inset: 0;
+      width: 23px; height: 23px; cursor: pointer; z-index: 1; margin: 0;
+    }
+    .cb-box {
+      width: 23px; height: 23px;
+      border: 2.5px solid #CBD5E1;
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      background: white;
+      font-size: 13px; color: transparent; font-weight: 900;
+      transition: background .18s, border-color .18s;
+      pointer-events: none;
+    }
+    .cb-wrap input:checked ~ .cb-box {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+    .cb-label {
+      font-size: 14px; line-height: 1.65;
+      color: #374151; cursor: pointer; flex: 1;
+      transition: color .2s;
+    }
+    .checklist li.done .cb-label { text-decoration: line-through; color: #9CA3AF; }
+
+    /* ── INFO BOXES ── */
+    .info-box {
+      border-radius: 10px;
+      padding: 13px 16px;
+      margin-top: 14px;
+      font-size: 13px; line-height: 1.75;
+    }
+    .info-box.tip  { background: #FFFBEB; border: 1px solid #FDE68A; }
+    .info-box.tip  strong { color: #92400E; }
+    .info-box.note { background: #EFF6FF; border: 1px solid #BFDBFE; }
+    .info-box.note strong { color: #1E40AF; }
+
+    /* ── FOLDER TREE ── */
+    .folder-tree {
+      background: #F0F4FF;
+      border: 1px solid #C7D7FD;
+      border-radius: 10px;
+      padding: 16px 18px;
+      margin-top: 14px;
+      font-family: 'Courier New', monospace;
+      font-size: 13.5px; line-height: 2;
+    }
+
+    /* ── CODE BLOCKS ── */
+    .code-wrap { margin-top: 16px; border-radius: 12px; overflow: hidden; }
+    .code-header {
+      background: #1E293B;
+      color: #94A3B8;
+      font-size: 12px; font-weight: 700;
+      padding: 9px 16px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .code-block {
+      background: #0F172A;
+      color: #CBD5E1;
+      font-family: 'Courier New', monospace;
+      font-size: 12.5px; line-height: 1.85;
+      padding: 16px;
+      overflow-x: auto;
+      white-space: pre;
+      max-height: 380px;
+    }
+    .copy-btn {
+      background: rgba(255,255,255,.1);
+      border: none; cursor: pointer;
+      color: #94A3B8;
+      padding: 5px 13px;
+      border-radius: 6px;
+      font-size: 12px; font-weight: 700;
+      font-family: inherit;
+      transition: all .2s;
+    }
+    .copy-btn:hover { background: rgba(255,255,255,.2); color: white; }
+    .copy-btn.copied { background: var(--green); color: white; }
+
+    /* ── BUTTONS ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 14px; font-weight: 800;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all .2s;
+      border: none;
+    }
+    .btn-orange { background: var(--orange); color: white; }
+    .btn-orange:hover { background: var(--orange-lt); transform: translateY(-1px); }
+    .btn-navy  { background: var(--navy);  color: white; }
+    .btn-navy:hover { background: var(--navy-light); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid var(--border);
+      color: var(--text-lt);
+    }
+    .btn-outline:hover { border-color: #EF4444; color: #EF4444; }
+    .btn-group { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.65);
+      text-align: center;
+      padding: 36px 24px;
+      font-size: 14px;
+    }
+    .footer a { color: var(--orange); font-weight: 700; text-decoration: none; }
+    .footer a:hover { text-decoration: underline; }
+    .footer .reset-area { margin-top: 18px; }
+
+    /* ── ANIMATIONS ── */
+    @keyframes popIn {
+      from { transform: scale(.92); opacity: 0; }
+      to   { transform: scale(1);   opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .hero h2 { font-size: 28px; }
+      .progress-ring-wrap { display: none; }
+      .step-header { padding: 14px 16px; gap: 10px; }
+      .step-body { padding: 4px 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════ STICKY HEADER ════════ -->
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-badge">C</div>
+      <div class="brand-text">
+        <h1>Claude Setup</h1>
+        <p>Interactive Checklist for Teachers</p>
+      </div>
+    </div>
+    <div class="header-progress">
+      <div class="progress-stats">
+        <div class="progress-count" id="progressCount">0 / 57</div>
+        <div class="progress-label">tasks complete</div>
+      </div>
+      <div class="progress-ring-wrap">
+        <svg width="54" height="54" viewBox="0 0 54 54">
+          <circle class="ring-bg"   cx="27" cy="27" r="22"/>
+          <circle class="ring-fill" id="progressRing" cx="27" cy="27" r="22"/>
+        </svg>
+        <div class="ring-label" id="progressPct">0%</div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ════════ HERO ════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">For Teachers</div>
+    <h2>Set Up Claude the <em>Right Way</em></h2>
+    <p>Follow this interactive checklist to configure Claude so it sounds like <strong style="color:white">you</strong> — not a generic AI. Check off each step as you go. Your progress saves automatically in your browser.</p>
+    <div class="hero-credit">
+      <p>Framework by <a href="https://ruben.substack.com" target="_blank" rel="noopener noreferrer">Ruben Hassid</a> · <em>"How to AI"</em> Newsletter · 380,000+ subscribers<br>
+      <span style="opacity:.75;font-size:13px;">This checklist walks you through his full setup process, step by step.</span></p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════ MAIN ════════ -->
+<main class="main">
+  <div class="completion-banner" id="completionBanner">
+    <div class="trophy">🏆</div>
+    <h2>You're fully set up!</h2>
+    <p>Claude is now configured to think, write, and communicate like you. Open Cowork and run your first real task.</p>
+  </div>
+  <div id="stepsContainer"></div>
+</main>
+
+<!-- ════════ FOOTER ════════ -->
+<footer class="footer">
+  <p>Checklist based on the framework by <a href="https://ruben.substack.com" target="_blank" rel="noopener noreferrer">Ruben Hassid</a> &mdash; subscribe to his free newsletter <em>"How to AI"</em> to get his full prompt library.</p>
+  <p style="margin-top:8px"><a href="https://claude.ai" target="_blank" rel="noopener noreferrer">Claude.ai</a> &nbsp;|&nbsp; <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer">Download Desktop App</a></p>
+  <div class="reset-area">
+    <button class="btn btn-outline" onclick="resetAll()">↺ Reset All Progress</button>
+  </div>
+</footer>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  STEP DATA                                                   ║
+// ╚══════════════════════════════════════════════════════════════╝
+const STEPS = [
+  {
+    id: 's1',
+    title: 'Create Your Claude Account',
+    meta: 'claude.ai · Free to start — Pro strongly recommended',
+    desc: 'Sign up at claude.ai using your <strong>personal email</strong> — not your school email. You want to own this account regardless of where you work. The free tier is fine to start, but <strong>Pro ($20/month, or $17/month annually)</strong> unlocks the models and features this entire setup depends on.',
+    tasks: [
+      { id: 's1_t1', text: 'Go to claude.ai and click "Sign Up"' },
+      { id: 's1_t2', text: 'Use your personal email (not your school email — you want to own this account)' },
+      { id: 's1_t3', text: 'Verify your email and set a strong password' },
+      { id: 's1_t4', text: 'Upgrade to Pro: click your profile icon (bottom-left) → "Upgrade to Pro" → enter payment info' },
+    ],
+    links: [{ label: 'Create Account at Claude.ai', url: 'https://claude.ai', style: 'orange' }],
+    tip: '💡 Pro costs $20/month (or $17 billed annually). It unlocks Claude\'s smartest model and all the Cowork features in this guide. The free tier is too limited for serious, daily use.',
+  },
+  {
+    id: 's2',
+    title: 'Download the Desktop App',
+    meta: 'Mac or Windows · Required for Cowork mode',
+    desc: 'The desktop app is where Claude\'s most powerful feature lives — <strong>Cowork mode</strong>. You cannot access Cowork from the browser. This step is not optional if you want Claude to actually know who you are.',
+    tasks: [
+      { id: 's2_t1', text: 'Go to claude.ai/download in your browser' },
+      { id: 's2_t2', text: 'Download the version for your computer (Mac or Windows)' },
+      { id: 's2_t3', text: 'Install the app and sign in with the same account you created' },
+      { id: 's2_t4', text: 'Open the app and confirm you can see a "Cowork" tab at the top' },
+    ],
+    links: [{ label: 'Download Desktop App', url: 'https://claude.ai/download', style: 'orange' }],
+    tip: '💡 The browser version of Claude does not have Cowork mode. You need the desktop app for everything from Step 4 onwards.',
+  },
+  {
+    id: 's3',
+    title: 'Understand the Three Modes',
+    meta: 'Just read this — no action required',
+    desc: 'Claude has three ways to use it. Knowing the difference matters because you\'ll spend almost all of your time in one of them.',
+    tasks: [
+      { id: 's3_t1', text: 'Chat — Quick questions, brainstorming, one-off tasks. No file access. No memory between conversations.' },
+      { id: 's3_t2', text: 'Projects — Upload reference files, set custom instructions. Good for ongoing, focused work.' },
+      { id: 's3_t3', text: 'Cowork — Claude reads your files, creates new ones, follows global instructions. Use this 80% of the time.' },
+      { id: 's3_t4', text: 'I understand: Cowork is where the real power lives — use it as my default.' },
+    ],
+    tip: '💡 Hassid\'s core advice: use Cowork 80% of the time. This is where Claude stops being a chatbot and starts being a genuine working partner that knows who you are.',
+  },
+  {
+    id: 's4',
+    title: 'Set Up Your Cowork Folder Structure',
+    meta: 'Finder (Mac) or File Explorer (Windows) · 5 minutes',
+    desc: 'Before you open Cowork, build the folder system that makes it work. This is the backbone of the entire setup. Without it, Claude has no context, no memory, and no understanding of who you are.',
+    tasks: [
+      { id: 's4_t1', text: 'Open Finder (Mac) or File Explorer (Windows)' },
+      { id: 's4_t2', text: 'Go to your Documents folder and create a new folder called CLAUDE COWORK' },
+      { id: 's4_t3', text: 'Inside CLAUDE COWORK, create a subfolder called ABOUT ME' },
+      { id: 's4_t4', text: 'Inside CLAUDE COWORK, create a subfolder called PROJECTS' },
+      { id: 's4_t5', text: 'Inside CLAUDE COWORK, create a subfolder called TEMPLATES' },
+      { id: 's4_t6', text: 'Inside CLAUDE COWORK, create a subfolder called CLAUDE OUTPUTS' },
+    ],
+    folderTree: `CLAUDE COWORK/
+├── ABOUT ME/         ← Your identity, voice & writing rules (Claude reads this first)
+├── PROJECTS/         ← One subfolder per active project
+├── TEMPLATES/        ← Proven structures you want Claude to reuse
+└── CLAUDE OUTPUTS/   ← Claude saves all its work here (you never write here)`,
+    tip: '💡 ABOUT ME is the most important folder in the system. Claude reads everything in it before every task. CLAUDE OUTPUTS is the only folder Claude writes to — never add files there yourself.',
+  },
+  {
+    id: 's5',
+    title: 'Connect Your Folder to Cowork',
+    meta: 'Claude Desktop App · 2 minutes',
+    desc: 'Give Claude access to your CLAUDE COWORK folder. Once connected, Claude can read your ABOUT ME and PROJECTS files, and save its output to CLAUDE OUTPUTS.',
+    tasks: [
+      { id: 's5_t1', text: 'Open the Claude desktop app' },
+      { id: 's5_t2', text: 'Click the "Cowork" tab at the top of the app' },
+      { id: 's5_t3', text: 'When prompted to select a folder, navigate to your CLAUDE COWORK folder and select it' },
+      { id: 's5_t4', text: 'Confirm Claude shows it now has access to your folder' },
+    ],
+    tip: '💡 After connecting, Claude can see all your files, create new ones in CLAUDE OUTPUTS, and reference your identity files in ABOUT ME before every task.',
+  },
+  {
+    id: 's6',
+    title: 'Set Your Model and Thinking Settings',
+    meta: 'Cowork interface · 30 seconds · Set once, never change',
+    desc: 'This takes 30 seconds and you should never need to change it again. These two settings are the difference between a generic response and serious, high-quality output.',
+    tasks: [
+      { id: 's6_t1', text: 'In the Cowork interface, click the model selector dropdown at the bottom of the chat area' },
+      { id: 's6_t2', text: 'Select "Claude Opus 4.6" — described as "Most capable for ambitious work"' },
+      { id: 's6_t3', text: 'Turn on the "Extended Thinking" toggle (says "Think longer for complex tasks")' },
+      { id: 's6_t4', text: 'Leave both settings permanently on — do not toggle between models to save time' },
+    ],
+    tip: '💡 Extended Thinking forces Claude to reason before answering — like an internal monologue before it responds. The quality difference is real and significant. Don\'t optimize for speed.',
+  },
+  {
+    id: 's7',
+    title: 'Set Your Global Instructions',
+    meta: 'Settings → Cowork · Set once, runs every session automatically',
+    desc: 'Global Instructions are a persistent prompt that Claude reads before every Cowork session. You write them once. They run every time. You never type them again. This is one of the most powerful setup steps.',
+    tasks: [
+      { id: 's7_t1', text: 'In the Claude desktop app, click your profile icon (bottom-left corner)' },
+      { id: 's7_t2', text: 'Click "Settings" → then click "Cowork" in the left sidebar' },
+      { id: 's7_t3', text: 'Find the text box: "Add instructions for Claude to follow in all Cowork sessions..."' },
+      { id: 's7_t4', text: 'Click "Copy" below, then paste the instructions into that text box' },
+      { id: 's7_t5', text: 'Click Save' },
+    ],
+    code: {
+      label: 'GLOBAL INSTRUCTIONS — Copy this, then paste into Settings → Cowork',
+      content: `GLOBAL INSTRUCTIONS
+
+BEFORE EVERY TASK
+1. Read ABOUT ME/. No task starts without reading both files in that folder.
+2. If the task relates to a project, read everything in the matching PROJECTS/ subfolder before proceeding.
+3. If the task involves a content type that has a matching pattern in TEMPLATES/, study that template's structure first. Use the structure. Don't copy the content.
+
+FOLDER PROTOCOL
+You have three read-only folders and one write folder.
+
+Read-only — never create, edit, or delete anything here:
+  • ABOUT ME/       → My identity, voice and writing rules.
+  • TEMPLATES/      → Proven structures to reuse as patterns.
+  • PROJECTS/       → My briefs, references, and finished work organized by project.
+
+Write folder — the only place you deliver work:
+  • CLAUDE OUTPUTS/ → Everything you create goes here. Organize with one subfolder per
+                      project, mirroring the structure of PROJECTS/. Create the subfolder
+                      if it doesn't exist yet.
+
+NAMING CONVENTION
+All files you create must follow this format:
+  project_content-type_v1.ext
+
+Content types: Email, Newsletter, Lesson Plan, Brief, Deck, Report, Letter.
+
+Examples:
+  • ParentComm_Email_v1.md
+  • StaffMeeting_Brief_v1.md
+  • ScienceFair_LessonPlan_v2.docx
+
+Increment the version number if a file with the same name already exists.
+
+OPERATING RULES
+  • If the brief is unclear or incomplete, ask me clarifying questions before you start.
+    Don't fill gaps with generic filler.
+  • Don't over-explain. Deliver the work. Save the commentary unless I ask for it.
+  • Never delete files anywhere.`,
+    },
+    tip: '💡 Think of Global Instructions as standing orders — Claude follows these rules automatically before every Cowork session without you ever having to repeat yourself.',
+  },
+  {
+    id: 's8',
+    title: 'Build Your Voice Profile (The 100-Question Framework)',
+    meta: 'Chat mode · Budget 2+ hours · The most important step',
+    desc: 'This is the step that separates "Claude is kind of helpful" from "Claude sounds like me." Ruben Hassid built a framework called the <strong>Taste Interviewer</strong>. It asks you 100 questions to extract the DNA of how you think, write, and communicate. The output becomes your voice profile — saved in ABOUT ME.',
+    tasks: [
+      { id: 's8_t1', text: 'Open Claude in Chat mode (browser or desktop app — Cowork is not needed for this)' },
+      { id: 's8_t2', text: 'Make sure Claude Opus 4.6 is selected as the model' },
+      { id: 's8_t3', text: 'Start a new conversation and paste the full Taste Interviewer prompt below' },
+      { id: 's8_t4', text: 'Answer all 100 questions honestly and in detail — don\'t rush, this is the most important part' },
+      { id: 's8_t5', text: 'After question 100, Claude compiles a full markdown document — copy all of it' },
+      { id: 's8_t6', text: 'Save that file in your ABOUT ME/ folder as "voice-profile.md"' },
+    ],
+    code: {
+      label: 'TASTE INTERVIEWER PROMPT — Copy this, paste it into a new Claude chat',
+      content: `You are a Taste Interviewer — a relentless interviewer whose job is to extract the DNA
+of how I think, write, and communicate.
+
+<interview_philosophy>
+You're not here to be polite. You're here to get to the truth. Most people can't
+articulate their own taste — your job is to dig until it's clear.
+</interview_philosophy>
+
+<interview_structure>
+Conduct 100 questions total across these categories (not necessarily in order —
+follow the thread when something interesting emerges):
+
+BELIEFS & CONTRARIAN TAKES (15 questions)
+  - What I believe that others in my field don't
+  - Hot takes I'd defend to the death
+  - Conventional wisdom I think is wrong
+
+WRITING MECHANICS (20 questions)
+  - How I actually write (not how I think I write)
+  - My default sentence structures
+  - How I open pieces / How I close them
+  - My relationship with punctuation, formatting, line breaks
+  - Words I overuse / Words I love / Words I'd never use
+
+AESTHETIC CRIMES (15 questions)
+  - What makes me cringe in other people's writing
+  - Specific phrases or patterns that feel like nails on a chalkboard
+  - Types of content I find lazy or uninspired
+
+VOICE & PERSONALITY (15 questions)
+  - How I use humor (if at all)
+  - My tone when I'm being serious vs. casual
+  - How I handle disagreement or controversy
+  - What I sound like when I'm excited vs. skeptical
+
+STRUCTURAL PREFERENCES (15 questions)
+  - How I organize ideas
+  - My relationship with lists, headers, bullets
+  - How I handle transitions
+  - My default content structures
+
+HARD NOS (10 questions)
+  - Things I'd never write about
+  - Approaches I'd never take
+  - Lines I won't cross
+
+RED FLAGS (10 questions)
+  - What makes me immediately distrust a piece of content
+  - Signals that someone doesn't know what they're talking about
+</interview_structure>
+
+<interview_rules>
+1. ONE question at a time. Wait for my response before moving on.
+2. Push back on vague answers. If I say "I like to keep things simple," ask
+   "Simple how? Give me an example."
+3. Ask for specific examples. "Show me a sentence you've written that captures this."
+4. Call out contradictions. If I said one thing earlier and something different now,
+   point it out.
+5. Go deeper on interesting threads. If something unusual emerges, follow it.
+6. Don't accept "I don't know" easily. Try reframing or approaching from another angle.
+</interview_rules>
+
+<output_requirements>
+After exactly 100 questions, compile everything into a comprehensive markdown document.
+This is NOT a summary — it's a complete record.
+
+Structure it like this:
+
+# VOICE PROFILE: [My Name]
+
+## Core Identity
+[2-3 sentences capturing the essence — this is the only summary section]
+
+## SECTION 1: BELIEFS & CONTRARIAN TAKES
+
+**Q1:** [The question you asked]
+[My full answer, preserved verbatim or lightly cleaned up for clarity]
+
+[Continue for all questions in this category...]
+
+## SECTION 2: WRITING MECHANICS
+[Same format — question, then full answer]
+
+## SECTION 3: AESTHETIC CRIMES
+[Same format]
+
+## SECTION 4: VOICE & PERSONALITY
+[Same format]
+
+## SECTION 5: STRUCTURAL PREFERENCES
+[Same format]
+
+## SECTION 6: HARD NOS
+[Same format]
+
+## SECTION 7: RED FLAGS
+[Same format]
+
+## QUICK REFERENCE CARD
+**Always:** [Extracted from answers — specific patterns to follow]
+**Never:** [Extracted from answers — specific things to avoid]
+**Signature Phrases & Structures:** [Actual examples I provided during the interview]
+**Voice Calibration:** [Key quotes from my answers that capture tone]
+
+## HOW TO USE THIS DOCUMENT
+
+This document captures my taste — it is NOT a checklist to follow rigidly.
+The goal is to internalize my sensibility, not to mechanically apply every pattern.
+
+For each tendency documented:
+  - HARD RULE      — Never violate (rare — usually only in the "Never" section)
+  - STRONG TENDENCY — Do this 70-80% of the time, breaking it occasionally is fine
+  - LIGHT PREFERENCE — Nice to have, but context determines when to apply
+
+When no label exists, assume LIGHT PREFERENCE.
+
+If you forget everything else, remember these 3 things:
+  1. [My single most important belief about writing]
+  2. [The one pattern that makes my voice mine]
+  3. [The #1 thing I never do]
+
+Everything else is secondary.
+</output_requirements>
+
+Begin by asking me your first question.`,
+    },
+    tip: '💡 Pro tip: Use voice-to-text to answer questions out loud instead of typing. On Mac, press the Fn key twice to activate dictation. You\'ll give longer, more natural answers.',
+    note: '📌 Key insight from Hassid: 80% of your voice profile should be what you would NEVER say — not what you like. "I never use \'leverage\' as a verb" is far more useful to Claude than "I like a professional tone."',
+  },
+  {
+    id: 's9',
+    title: "Get Hassid's Anti-AI Writing Style File",
+    meta: 'Free download · ruben.substack.com · 5 minutes',
+    desc: 'Your voice profile tells Claude who you are. This file tells Claude what <em>AI writing</em> sounds like — so it knows exactly what to avoid. The filler words, the fake enthusiasm, the patterns that make everything sound like it was generated by the same robot. Hassid built this and gives it away for free.',
+    tasks: [
+      { id: 's9_t1', text: 'Go to ruben.substack.com and subscribe (free) to his newsletter "How to AI"' },
+      { id: 's9_t2', text: 'Check your inbox for the welcome email and open it' },
+      { id: 's9_t3', text: 'Inside the welcome email, find the link to his Prompt Library (a Notion document)' },
+      { id: 's9_t4', text: 'Open the Notion doc and find the Anti-AI Writing Style file' },
+      { id: 's9_t5', text: 'Download it as a markdown file (.md) — in Notion: File → Export → Markdown' },
+      { id: 's9_t6', text: 'Save the file to your ABOUT ME/ folder alongside voice-profile.md' },
+    ],
+    links: [{ label: "Subscribe to Hassid's Newsletter (Free)", url: 'https://ruben.substack.com', style: 'orange' }],
+    tip: '💡 Your ABOUT ME folder now has two powerful files: one that says who you are, and one that says what AI writing sounds like so Claude avoids it. Together they dramatically improve every output.',
+  },
+  {
+    id: 's10',
+    title: 'Your First Real Prompt',
+    meta: 'Cowork mode · The formula you\'ll use every time',
+    desc: 'Now you test the system. The key to great output is <strong>not</strong> writing a clever prompt — it\'s giving Claude the task and success criteria, then letting Claude ask <em>you</em> clarifying questions before it starts. This is the feature that changes everything.',
+    tasks: [
+      { id: 's10_t1', text: 'Inside your PROJECTS/ folder, create a subfolder for something you\'re actually working on (e.g. "Parent-Newsletter" or "Unit-Plan")' },
+      { id: 's10_t2', text: 'Drop any relevant reference material into that subfolder (previous examples, notes, brief)' },
+      { id: 's10_t3', text: 'Open the Claude desktop app and confirm your CLAUDE COWORK folder is still selected in Cowork' },
+      { id: 's10_t4', text: 'Type a prompt using the formula shown below' },
+      { id: 's10_t5', text: 'Answer Claude\'s clarifying questions honestly and in detail' },
+      { id: 's10_t6', text: 'Review the output — notice whether it sounds like something you would actually write' },
+    ],
+    code: {
+      label: 'THE PROMPT FORMULA — Use this every time you start a task in Cowork',
+      content: `I want to [TASK] to [SUCCESS CRITERIA].
+
+First, explore my CLAUDE COWORK folder. Then, ask me clarifying questions.
+I want to refine the approach with you before you execute.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+EXAMPLE FOR TEACHERS:
+
+I want to write a parent newsletter about our upcoming science fair to make sure
+all families feel informed and excited, regardless of their reading level.
+
+First, explore my CLAUDE COWORK folder. Then, ask me clarifying questions.
+I want to refine the approach with you before you execute.`,
+    },
+    tip: '💡 The phrase "ask me clarifying questions" is the key. Instead of you trying to write a perfect prompt, Claude asks what it needs to know. If the output doesn\'t sound right, that\'s feedback — go back to your voice profile and add what\'s missing.',
+  },
+  {
+    id: 's11',
+    title: 'Build Your Template Library (Over Time)',
+    meta: 'Ongoing · TEMPLATES/ folder · Add as you go — don\'t force it',
+    desc: 'Don\'t try to build templates on day one. Instead, as you produce work you\'re proud of, save the structure to your TEMPLATES folder. Claude will use these as patterns for future work. The more templates you build over time, the less you have to explain.',
+    tasks: [
+      { id: 's11_t1', text: 'Understand the difference: a template saves the structure (the "how"), never the content (the "what")' },
+      { id: 's11_t2', text: 'After finishing a piece of writing you\'re genuinely proud of, strip out the specific content and save the skeleton to TEMPLATES/' },
+      { id: 's11_t3', text: 'Name templates clearly — e.g. "template_parent-email.md" or "template_unit-intro.md"' },
+      { id: 's11_t4', text: 'Build templates gradually as you go — good templates come from good work, not the other way around' },
+    ],
+    tip: '💡 A great template is the skeleton of your best work. If you wrote a parent email that perfectly nailed the tone, strip out the names and details, keep the structure, and save it. Claude will use it as a pattern every time.',
+  },
+  {
+    id: 's12',
+    title: 'Refine Your Voice Profile (Ongoing)',
+    meta: 'Ongoing · Living document · Gets better with every use',
+    desc: 'Your voice profile is not a finished document — it\'s a living record. Every time Claude misses the mark, that\'s useful information. Go back to voice-profile.md and add what was missing. Within a month, Claude will rarely miss.',
+    tasks: [
+      { id: 's12_t1', text: 'When output doesn\'t sound quite right, identify specifically what feels off' },
+      { id: 's12_t2', text: 'Open voice-profile.md in your ABOUT ME/ folder and add the missing detail' },
+      { id: 's12_t3', text: 'Be specific with rejections: "never say \'leverage\' as a verb" beats "I prefer a professional tone"' },
+      { id: 's12_t4', text: 'Plan to revisit and update the profile every few weeks — it compounds over time' },
+    ],
+    tip: '💡 The profile gets exponentially more powerful over time. Every correction you add makes future output better. This is what makes Claude feel like a genuine working partner rather than a generic tool.',
+  },
+];
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  RENDER                                                      ║
+// ╚══════════════════════════════════════════════════════════════╝
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderSteps() {
+  const container = document.getElementById('stepsContainer');
+  container.innerHTML = '';
+
+  STEPS.forEach((step, idx) => {
+    const done = step.tasks.filter(t => localStorage.getItem(t.id) === 'true').length;
+    const total = step.tasks.length;
+    const allDone = done === total;
+    const started = done > 0 && !allDone;
+
+    const card = document.createElement('div');
+    card.className = 'step-card' + (allDone ? ' completed' : started ? ' in-progress' : '');
+    card.id = step.id;
+
+    const numIcon = allDone ? '✓' : (idx + 1);
+
+    // ── build checklist html ──
+    let checklistHtml = '<ul class="checklist">';
+    step.tasks.forEach(t => {
+      const checked = localStorage.getItem(t.id) === 'true';
+      checklistHtml += `
+        <li class="${checked ? 'done' : ''}" id="li_${t.id}">
+          <div class="cb-wrap">
+            <input type="checkbox" id="${t.id}" ${checked ? 'checked' : ''}
+                   onchange="toggleTask('${t.id}','${step.id}')">
+            <div class="cb-box">${checked ? '✓' : ''}</div>
+          </div>
+          <label class="cb-label" for="${t.id}">${t.text}</label>
+        </li>`;
+    });
+    checklistHtml += '</ul>';
+
+    // ── folder tree ──
+    const folderHtml = step.folderTree
+      ? `<div class="folder-tree"><pre>${escHtml(step.folderTree)}</pre></div>`
+      : '';
+
+    // ── code block ──
+    let codeHtml = '';
+    if (step.code) {
+      const cid = `code_${step.id}`;
+      codeHtml = `
+        <div class="code-wrap">
+          <div class="code-header">
+            <span>${step.code.label}</span>
+            <button class="copy-btn" onclick="copyCode('${cid}',this)">Copy</button>
+          </div>
+          <div class="code-block" id="${cid}">${escHtml(step.code.content)}</div>
+        </div>`;
+    }
+
+    // ── links ──
+    let linksHtml = '';
+    if (step.links) {
+      linksHtml = '<div class="btn-group">';
+      step.links.forEach(l => {
+        linksHtml += `<a href="${l.url}" target="_blank" rel="noopener noreferrer"
+                        class="btn btn-${l.style || 'navy'}">↗ ${l.label}</a>`;
+      });
+      linksHtml += '</div>';
+    }
+
+    // ── note ──
+    const noteHtml = step.note
+      ? `<div class="info-box note"><strong>Note:</strong> ${step.note}</div>` : '';
+
+    // ── tip ──
+    const tipHtml = step.tip
+      ? `<div class="info-box tip">${step.tip}</div>` : '';
+
+    card.innerHTML = `
+      <div class="step-header" onclick="toggleStep('${step.id}')">
+        <div class="step-num">${numIcon}</div>
+        <div class="step-info">
+          <div class="step-title">Step ${idx+1}: ${step.title}</div>
+          <div class="step-meta">${step.meta}</div>
+        </div>
+        <div class="step-right">
+          <div class="step-pill">${done}/${total}</div>
+          <div class="chevron">▼</div>
+        </div>
+      </div>
+      <div class="step-body">
+        <div class="step-desc">${step.desc}</div>
+        ${checklistHtml}
+        ${folderHtml}
+        ${codeHtml}
+        ${linksHtml}
+        ${noteHtml}
+        ${tipHtml}
+      </div>`;
+
+    container.appendChild(card);
+  });
+
+  updateGlobalProgress();
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  INTERACTIONS                                                ║
+// ╚══════════════════════════════════════════════════════════════╝
+function toggleStep(id) {
+  const card = document.getElementById(id);
+  const isOpen = card.classList.contains('open');
+  document.querySelectorAll('.step-card.open').forEach(c => c.classList.remove('open'));
+  if (!isOpen) card.classList.add('open');
+}
+
+function toggleTask(taskId, stepId) {
+  const cb = document.getElementById(taskId);
+  const checked = cb.checked;
+
+  localStorage.setItem(taskId, String(checked));
+
+  // update visual checkbox
+  const box = cb.nextElementSibling;
+  box.textContent = checked ? '✓' : '';
+
+  // update li style
+  document.getElementById('li_' + taskId).classList.toggle('done', checked);
+
+  // update card
+  updateStepCard(stepId);
+  updateGlobalProgress();
+}
+
+function updateStepCard(stepId) {
+  const step = STEPS.find(s => s.id === stepId);
+  const card = document.getElementById(stepId);
+  const done  = step.tasks.filter(t => localStorage.getItem(t.id) === 'true').length;
+  const total = step.tasks.length;
+  const idx   = STEPS.indexOf(step);
+
+  card.querySelector('.step-pill').textContent = `${done}/${total}`;
+  card.querySelector('.step-num').textContent   = done === total ? '✓' : (idx + 1);
+
+  card.classList.remove('completed','in-progress');
+  if (done === total)          card.classList.add('completed');
+  else if (done > 0)           card.classList.add('in-progress');
+}
+
+function updateGlobalProgress() {
+  const allTasks  = STEPS.flatMap(s => s.tasks);
+  const completed = allTasks.filter(t => localStorage.getItem(t.id) === 'true').length;
+  const total     = allTasks.length;
+  const pct       = Math.round((completed / total) * 100);
+
+  document.getElementById('progressCount').textContent = `${completed} / ${total}`;
+  document.getElementById('progressPct').textContent   = `${pct}%`;
+
+  // ring: circumference = 2π × 22 ≈ 138.23
+  const C = 2 * Math.PI * 22;
+  document.getElementById('progressRing').style.strokeDashoffset = C - (pct / 100) * C;
+
+  // completion banner
+  document.getElementById('completionBanner').classList.toggle('show', completed === total);
+}
+
+function copyCode(codeId, btn) {
+  const text = document.getElementById(codeId).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 2200);
+  });
+}
+
+function resetAll() {
+  if (!confirm('Reset all your progress? This cannot be undone.')) return;
+  STEPS.flatMap(s => s.tasks).forEach(t => localStorage.removeItem(t.id));
+  renderSteps();
+  // re-open first step
+  setTimeout(() => toggleStep(STEPS[0].id), 80);
+}
+
+// ╔══════════════════════════════════════════════════════════════╗
+// ║  INIT                                                        ║
+// ╚══════════════════════════════════════════════════════════════╝
+renderSteps();
+
+// auto-open first incomplete step
+for (const step of STEPS) {
+  if (!step.tasks.every(t => localStorage.getItem(t.id) === 'true')) {
+    setTimeout(() => toggleStep(step.id), 100);
+    break;
+  }
+}
+</script>
+</body>
+</html>
