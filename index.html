@@ -396,7 +396,7 @@
     </div>
     <div class="header-progress">
       <div class="progress-stats">
-        <div class="progress-count" id="progressCount">0 / 57</div>
+        <div class="progress-count" id="progressCount">0 / 60</div>
         <div class="progress-label">tasks complete</div>
       </div>
       <div class="progress-ring-wrap">
@@ -538,199 +538,35 @@ const STEPS = [
     id: 's7',
     title: 'Set Your Global Instructions',
     meta: 'Settings → Cowork · Set once, runs every session automatically',
-    desc: 'Global Instructions are a persistent prompt that Claude reads before every Cowork session. You write them once. They run every time. You never type them again. This is one of the most powerful setup steps.',
+    desc: 'Global Instructions are a persistent prompt that Claude reads before every Cowork session. You write them once. They run every time. You never type them again. Think of it as the operating manual you hand a new employee on their first day — it tells Claude which folders to read, where to save work, how to name files, and what to do when something is unclear.<br><br>Hassid provides his exact template in his article <strong>"Cowork."</strong> on his Substack. Go get it directly from him — it\'s his work and it\'s free.',
     tasks: [
-      { id: 's7_t1', text: 'In the Claude desktop app, click your profile icon (bottom-left corner)' },
-      { id: 's7_t2', text: 'Click "Settings" → then click "Cowork" in the left sidebar' },
-      { id: 's7_t3', text: 'Find the text box: "Add instructions for Claude to follow in all Cowork sessions..."' },
-      { id: 's7_t4', text: 'Click "Copy" below, then paste the instructions into that text box' },
-      { id: 's7_t5', text: 'Click Save' },
+      { id: 's7_t1', text: 'Go to ruben.substack.com and find the article titled "Cowork." (published March 2026) — subscribe free if needed to access it' },
+      { id: 's7_t2', text: 'Read the article and find "Step 3: Set Global Instructions" — the full template is in a code block' },
+      { id: 's7_t3', text: 'Copy his template, then customize it for your own folder names and content types (e.g. add "Lesson Plan" as a content type)' },
+      { id: 's7_t4', text: 'In the Claude desktop app, click your profile icon (bottom-left corner) → Settings → Cowork' },
+      { id: 's7_t5', text: 'Find the text box: "Add instructions for Claude to follow in all Cowork sessions..." and paste your customized instructions' },
+      { id: 's7_t6', text: 'Click Save' },
     ],
-    code: {
-      label: 'GLOBAL INSTRUCTIONS — Copy this, then paste into Settings → Cowork',
-      content: `GLOBAL INSTRUCTIONS
-
-BEFORE EVERY TASK
-1. Read ABOUT ME/. No task starts without reading both files in that folder.
-2. If the task relates to a project, read everything in the matching PROJECTS/ subfolder before proceeding.
-3. If the task involves a content type that has a matching pattern in TEMPLATES/, study that template's structure first. Use the structure. Don't copy the content.
-
-FOLDER PROTOCOL
-You have three read-only folders and one write folder.
-
-Read-only — never create, edit, or delete anything here:
-  • ABOUT ME/       → My identity, voice and writing rules.
-  • TEMPLATES/      → Proven structures to reuse as patterns.
-  • PROJECTS/       → My briefs, references, and finished work organized by project.
-
-Write folder — the only place you deliver work:
-  • CLAUDE OUTPUTS/ → Everything you create goes here. Organize with one subfolder per
-                      project, mirroring the structure of PROJECTS/. Create the subfolder
-                      if it doesn't exist yet.
-
-NAMING CONVENTION
-All files you create must follow this format:
-  project_content-type_v1.ext
-
-Content types: Email, Newsletter, Lesson Plan, Brief, Deck, Report, Letter.
-
-Examples:
-  • ParentComm_Email_v1.md
-  • StaffMeeting_Brief_v1.md
-  • ScienceFair_LessonPlan_v2.docx
-
-Increment the version number if a file with the same name already exists.
-
-OPERATING RULES
-  • If the brief is unclear or incomplete, ask me clarifying questions before you start.
-    Don't fill gaps with generic filler.
-  • Don't over-explain. Deliver the work. Save the commentary unless I ask for it.
-  • Never delete files anywhere.`,
-    },
+    links: [{ label: 'Read "Cowork." on Hassid\'s Substack', url: 'https://ruben.substack.com', style: 'orange' }],
     tip: '💡 Think of Global Instructions as standing orders — Claude follows these rules automatically before every Cowork session without you ever having to repeat yourself.',
   },
   {
     id: 's8',
     title: 'Build Your Voice Profile (The 100-Question Framework)',
     meta: 'Chat mode · Budget 2+ hours · The most important step',
-    desc: 'This is the step that separates "Claude is kind of helpful" from "Claude sounds like me." Ruben Hassid built a framework called the <strong>Taste Interviewer</strong>. It asks you 100 questions to extract the DNA of how you think, write, and communicate. The output becomes your voice profile — saved in ABOUT ME.',
+    desc: 'This is the step that separates "Claude is kind of helpful" from "Claude sounds like me." Hassid built a framework called the <strong>Taste Interviewer</strong> — a prompt that makes Claude ask you 100 questions to extract the DNA of how you think, write, and communicate. It covers your beliefs, your writing mechanics, your pet peeves, your voice, your hard lines. The output is a markdown file that becomes the core of your ABOUT ME folder.<br><br>The full Taste Interviewer prompt is in Hassid\'s article <strong>"I am just a text file."</strong> on his Substack. Go get it directly from him.',
     tasks: [
-      { id: 's8_t1', text: 'Open Claude in Chat mode (browser or desktop app — Cowork is not needed for this)' },
-      { id: 's8_t2', text: 'Make sure Claude Opus 4.6 is selected as the model' },
-      { id: 's8_t3', text: 'Start a new conversation and paste the full Taste Interviewer prompt below' },
-      { id: 's8_t4', text: 'Answer all 100 questions honestly and in detail — don\'t rush, this is the most important part' },
-      { id: 's8_t5', text: 'After question 100, Claude compiles a full markdown document — copy all of it' },
-      { id: 's8_t6', text: 'Save that file in your ABOUT ME/ folder as "voice-profile.md"' },
+      { id: 's8_t1', text: 'Go to ruben.substack.com and find the article titled "I am just a text file." (published January 2026)' },
+      { id: 's8_t2', text: 'Read the article — the Taste Interviewer prompt is inside it. Copy the entire prompt.' },
+      { id: 's8_t3', text: 'Open Claude in Chat mode (browser or desktop — Cowork is not needed for this step)' },
+      { id: 's8_t4', text: 'Make sure Claude Opus 4.6 is selected as the model' },
+      { id: 's8_t5', text: 'Start a new conversation and paste the full Taste Interviewer prompt' },
+      { id: 's8_t6', text: 'Answer all 100 questions honestly and in detail — don\'t rush, this is the most important part' },
+      { id: 's8_t7', text: 'After question 100, Claude compiles a full markdown document — copy all of it' },
+      { id: 's8_t8', text: 'Save that file in your ABOUT ME/ folder as "voice-profile.md"' },
     ],
-    code: {
-      label: 'TASTE INTERVIEWER PROMPT — Copy this, paste it into a new Claude chat',
-      content: `You are a Taste Interviewer — a relentless interviewer whose job is to extract the DNA
-of how I think, write, and communicate.
-
-<interview_philosophy>
-You're not here to be polite. You're here to get to the truth. Most people can't
-articulate their own taste — your job is to dig until it's clear.
-</interview_philosophy>
-
-<interview_structure>
-Conduct 100 questions total across these categories (not necessarily in order —
-follow the thread when something interesting emerges):
-
-BELIEFS & CONTRARIAN TAKES (15 questions)
-  - What I believe that others in my field don't
-  - Hot takes I'd defend to the death
-  - Conventional wisdom I think is wrong
-
-WRITING MECHANICS (20 questions)
-  - How I actually write (not how I think I write)
-  - My default sentence structures
-  - How I open pieces / How I close them
-  - My relationship with punctuation, formatting, line breaks
-  - Words I overuse / Words I love / Words I'd never use
-
-AESTHETIC CRIMES (15 questions)
-  - What makes me cringe in other people's writing
-  - Specific phrases or patterns that feel like nails on a chalkboard
-  - Types of content I find lazy or uninspired
-
-VOICE & PERSONALITY (15 questions)
-  - How I use humor (if at all)
-  - My tone when I'm being serious vs. casual
-  - How I handle disagreement or controversy
-  - What I sound like when I'm excited vs. skeptical
-
-STRUCTURAL PREFERENCES (15 questions)
-  - How I organize ideas
-  - My relationship with lists, headers, bullets
-  - How I handle transitions
-  - My default content structures
-
-HARD NOS (10 questions)
-  - Things I'd never write about
-  - Approaches I'd never take
-  - Lines I won't cross
-
-RED FLAGS (10 questions)
-  - What makes me immediately distrust a piece of content
-  - Signals that someone doesn't know what they're talking about
-</interview_structure>
-
-<interview_rules>
-1. ONE question at a time. Wait for my response before moving on.
-2. Push back on vague answers. If I say "I like to keep things simple," ask
-   "Simple how? Give me an example."
-3. Ask for specific examples. "Show me a sentence you've written that captures this."
-4. Call out contradictions. If I said one thing earlier and something different now,
-   point it out.
-5. Go deeper on interesting threads. If something unusual emerges, follow it.
-6. Don't accept "I don't know" easily. Try reframing or approaching from another angle.
-</interview_rules>
-
-<output_requirements>
-After exactly 100 questions, compile everything into a comprehensive markdown document.
-This is NOT a summary — it's a complete record.
-
-Structure it like this:
-
-# VOICE PROFILE: [My Name]
-
-## Core Identity
-[2-3 sentences capturing the essence — this is the only summary section]
-
-## SECTION 1: BELIEFS & CONTRARIAN TAKES
-
-**Q1:** [The question you asked]
-[My full answer, preserved verbatim or lightly cleaned up for clarity]
-
-[Continue for all questions in this category...]
-
-## SECTION 2: WRITING MECHANICS
-[Same format — question, then full answer]
-
-## SECTION 3: AESTHETIC CRIMES
-[Same format]
-
-## SECTION 4: VOICE & PERSONALITY
-[Same format]
-
-## SECTION 5: STRUCTURAL PREFERENCES
-[Same format]
-
-## SECTION 6: HARD NOS
-[Same format]
-
-## SECTION 7: RED FLAGS
-[Same format]
-
-## QUICK REFERENCE CARD
-**Always:** [Extracted from answers — specific patterns to follow]
-**Never:** [Extracted from answers — specific things to avoid]
-**Signature Phrases & Structures:** [Actual examples I provided during the interview]
-**Voice Calibration:** [Key quotes from my answers that capture tone]
-
-## HOW TO USE THIS DOCUMENT
-
-This document captures my taste — it is NOT a checklist to follow rigidly.
-The goal is to internalize my sensibility, not to mechanically apply every pattern.
-
-For each tendency documented:
-  - HARD RULE      — Never violate (rare — usually only in the "Never" section)
-  - STRONG TENDENCY — Do this 70-80% of the time, breaking it occasionally is fine
-  - LIGHT PREFERENCE — Nice to have, but context determines when to apply
-
-When no label exists, assume LIGHT PREFERENCE.
-
-If you forget everything else, remember these 3 things:
-  1. [My single most important belief about writing]
-  2. [The one pattern that makes my voice mine]
-  3. [The #1 thing I never do]
-
-Everything else is secondary.
-</output_requirements>
-
-Begin by asking me your first question.`,
-    },
-    tip: '💡 Pro tip: Use voice-to-text to answer questions out loud instead of typing. On Mac, press the Fn key twice to activate dictation. You\'ll give longer, more natural answers.',
+    links: [{ label: 'Read "I am just a text file." on Hassid\'s Substack', url: 'https://ruben.substack.com', style: 'orange' }],
+    tip: '💡 Pro tip: Use voice-to-text to answer questions out loud instead of typing. On Mac, press the Fn key twice to activate dictation. You\'ll give longer, more natural answers — the profile will capture how you actually communicate, not how you think you do.',
     note: '📌 Key insight from Hassid: 80% of your voice profile should be what you would NEVER say — not what you like. "I never use \'leverage\' as a verb" is far more useful to Claude than "I like a professional tone."',
   },
   {
