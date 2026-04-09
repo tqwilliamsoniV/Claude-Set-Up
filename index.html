@@ -396,7 +396,7 @@
     </div>
     <div class="header-progress">
       <div class="progress-stats">
-        <div class="progress-count" id="progressCount">0 / 60</div>
+        <div class="progress-count" id="progressCount">0 / 67</div>
         <div class="progress-label">tasks complete</div>
       </div>
       <div class="progress-ring-wrap">
@@ -417,8 +417,9 @@
     <h2>Set Up Claude the <em>Right Way</em></h2>
     <p>Follow this interactive checklist to configure Claude so it sounds like <strong style="color:white">you</strong> — not a generic AI. Check off each step as you go. Your progress saves automatically in your browser.</p>
     <div class="hero-credit">
-      <p>Framework by <a href="https://ruben.substack.com" target="_blank" rel="noopener noreferrer">Ruben Hassid</a> · <em>"How to AI"</em> Newsletter · 380,000+ subscribers<br>
+      <p>Framework by <a href="https://ruben.substack.com" target="_blank" rel="noopener noreferrer">Ruben Hassid</a> · <em>"How to AI"</em> Newsletter · 448,000+ subscribers<br>
       <span style="opacity:.75;font-size:13px;">This checklist walks you through his full setup process, step by step.</span></p>
+
     </div>
   </div>
 </section>
@@ -492,57 +493,55 @@ const STEPS = [
     id: 's4',
     title: 'Set Up Your Cowork Folder Structure',
     meta: 'Finder (Mac) or File Explorer (Windows) · 5 minutes',
-    desc: 'Before you open Cowork, build the folder system that makes it work. This is the backbone of the entire setup. Without it, Claude has no context, no memory, and no understanding of who you are.',
+    desc: 'Before you open Cowork, build the folder system that makes it work. This is the backbone of the entire setup. Without it, Claude has no context, no memory, and no understanding of who you are.<br><br><strong>Important:</strong> Keep your ABOUT ME folder lean — under 6,000 tokens total across all files in it. If it gets bloated, Claude starts skimming instead of reading carefully.',
     tasks: [
       { id: 's4_t1', text: 'Open Finder (Mac) or File Explorer (Windows)' },
       { id: 's4_t2', text: 'Go to your Documents folder and create a new folder called CLAUDE COWORK' },
       { id: 's4_t3', text: 'Inside CLAUDE COWORK, create a subfolder called ABOUT ME' },
-      { id: 's4_t4', text: 'Inside CLAUDE COWORK, create a subfolder called PROJECTS' },
+      { id: 's4_t4', text: 'Inside CLAUDE COWORK, create a subfolder called OUTPUTS' },
       { id: 's4_t5', text: 'Inside CLAUDE COWORK, create a subfolder called TEMPLATES' },
-      { id: 's4_t6', text: 'Inside CLAUDE COWORK, create a subfolder called CLAUDE OUTPUTS' },
     ],
     folderTree: `CLAUDE COWORK/
-├── ABOUT ME/         ← Your identity, voice & writing rules (Claude reads this first)
-├── PROJECTS/         ← One subfolder per active project
-├── TEMPLATES/        ← Proven structures you want Claude to reuse
-└── CLAUDE OUTPUTS/   ← Claude saves all its work here (you never write here)`,
-    tip: '💡 ABOUT ME is the most important folder in the system. Claude reads everything in it before every task. CLAUDE OUTPUTS is the only folder Claude writes to — never add files there yourself.',
+├── ABOUT ME/   ← Your identity, voice & writing rules (Claude reads every file here before each task)
+├── OUTPUTS/    ← Claude saves all its work here, organized by project (you never write here)
+└── TEMPLATES/  ← Proven structures Claude reuses — Claude manages this folder automatically`,
+    tip: '💡 ABOUT ME is the most critical folder. Claude reads every file in it before every task — keep it focused and under 6,000 tokens total. OUTPUTS is the only folder Claude writes to.',
   },
   {
     id: 's5',
     title: 'Connect Your Folder to Cowork',
     meta: 'Claude Desktop App · 2 minutes',
-    desc: 'Give Claude access to your CLAUDE COWORK folder. Once connected, Claude can read your ABOUT ME and PROJECTS files, and save its output to CLAUDE OUTPUTS.',
+    desc: 'Give Claude access to your CLAUDE COWORK folder. Once connected, Claude can read your ABOUT ME files and save all its output to OUTPUTS.',
     tasks: [
       { id: 's5_t1', text: 'Open the Claude desktop app' },
       { id: 's5_t2', text: 'Click the "Cowork" tab at the top of the app' },
-      { id: 's5_t3', text: 'When prompted to select a folder, navigate to your CLAUDE COWORK folder and select it' },
+      { id: 's5_t3', text: 'Click the folder selector (it says "Work in a project" by default) and choose your CLAUDE COWORK folder' },
       { id: 's5_t4', text: 'Confirm Claude shows it now has access to your folder' },
     ],
-    tip: '💡 After connecting, Claude can see all your files, create new ones in CLAUDE OUTPUTS, and reference your identity files in ABOUT ME before every task.',
+    tip: '💡 After connecting, Claude can see all your files, create new ones in OUTPUTS, and reference your identity files in ABOUT ME before every task.',
   },
   {
     id: 's6',
     title: 'Set Your Model and Thinking Settings',
-    meta: 'Cowork interface · 30 seconds · Set once, never change',
-    desc: 'This takes 30 seconds and you should never need to change it again. These two settings are the difference between a generic response and serious, high-quality output.',
+    meta: 'Cowork interface · 30 seconds · Set once, never change for real work',
+    desc: 'This takes 30 seconds and you should never need to change it again for serious work. These two settings are the difference between a generic response and high-quality output.',
     tasks: [
-      { id: 's6_t1', text: 'In the Cowork interface, click the model selector dropdown at the bottom of the chat area' },
+      { id: 's6_t1', text: 'In the Cowork interface, click the model selector dropdown at the bottom-right of the chat area' },
       { id: 's6_t2', text: 'Select "Claude Opus 4.6" — described as "Most capable for ambitious work"' },
       { id: 's6_t3', text: 'Turn on the "Extended Thinking" toggle (says "Think longer for complex tasks")' },
-      { id: 's6_t4', text: 'Leave both settings permanently on — do not toggle between models to save time' },
+      { id: 's6_t4', text: 'Leave both on for real work — for simple tasks like grammar checks or formatting, Sonnet 4.6 works fine and uses fewer credits' },
     ],
-    tip: '💡 Extended Thinking forces Claude to reason before answering — like an internal monologue before it responds. The quality difference is real and significant. Don\'t optimize for speed.',
+    tip: '💡 Extended Thinking forces Claude to reason before answering — like an internal monologue before it responds. The quality difference is significant. Don\'t optimize for speed on work that matters.',
   },
   {
     id: 's7',
     title: 'Set Your Global Instructions',
     meta: 'Settings → Cowork · Set once, runs every session automatically',
-    desc: 'Global Instructions are a persistent prompt that Claude reads before every Cowork session. You write them once. They run every time. You never type them again. Think of it as the operating manual you hand a new employee on their first day — it tells Claude which folders to read, where to save work, how to name files, and what to do when something is unclear.<br><br>Hassid provides his exact template in his article <strong>"Cowork."</strong> on his Substack. Go get it directly from him — it\'s his work and it\'s free.',
+    desc: 'Global Instructions are a persistent prompt that Claude reads before every Cowork session. You write them once. They run every time. You never type them again. Think of it as the operating manual you hand a new employee on their first day — it tells Claude which files to read, where to save work, and what to do when something is unclear.<br><br>Hassid provides his exact template in his April 8, 2026 article <strong>"Cowork."</strong> on his Substack. Go get it directly from him — it\'s his work and it\'s free.',
     tasks: [
-      { id: 's7_t1', text: 'Go to ruben.substack.com and find the article titled "Cowork." (published March 2026) — subscribe free if needed to access it' },
-      { id: 's7_t2', text: 'Read the article and find "Step 3: Set Global Instructions" — the full template is in a code block' },
-      { id: 's7_t3', text: 'Copy his template, then customize it for your own folder names and content types (e.g. add "Lesson Plan" as a content type)' },
+      { id: 's7_t1', text: 'Go to ruben.substack.com and find the article titled "Cowork." (published April 8, 2026) — subscribe free if needed' },
+      { id: 's7_t2', text: 'Find the section titled "II — How to set up Global Instructions" — the full template is in a code block there' },
+      { id: 's7_t3', text: 'Copy his template, then customize the file descriptions to match what\'s actually in your ABOUT ME folder' },
       { id: 's7_t4', text: 'In the Claude desktop app, click your profile icon (bottom-left corner) → Settings → Cowork' },
       { id: 's7_t5', text: 'Find the text box: "Add instructions for Claude to follow in all Cowork sessions..." and paste your customized instructions' },
       { id: 's7_t6', text: 'Click Save' },
@@ -552,38 +551,53 @@ const STEPS = [
   },
   {
     id: 's8',
-    title: 'Build Your Voice Profile (The 100-Question Framework)',
-    meta: 'Chat mode · Budget 2+ hours · The most important step',
-    desc: 'This is the step that separates "Claude is kind of helpful" from "Claude sounds like me." Hassid built a framework called the <strong>Taste Interviewer</strong> — a prompt that makes Claude ask you 100 questions to extract the DNA of how you think, write, and communicate. It covers your beliefs, your writing mechanics, your pet peeves, your voice, your hard lines. The output is a markdown file that becomes the core of your ABOUT ME folder.<br><br>The full Taste Interviewer prompt is in Hassid\'s article <strong>"I am just a text file."</strong> on his Substack. Go get it directly from him.',
+    title: 'Build Your Voice Profile (about-me.md)',
+    meta: 'Cowork mode · 20 questions · The most important step',
+    desc: 'This is the step that separates "Claude is kind of helpful" from "Claude sounds like me." Hassid\'s updated method uses <strong>20 focused questions</strong> — replacing the older 100-question format — and produces the same quality result in a file under 2,000 tokens, small enough for Claude to read carefully every single time.<br><br>The interview prompt is in Hassid\'s article <strong>"Cowork."</strong> (April 8, 2026) — look for the section on the three core files in your ABOUT ME folder.',
     tasks: [
-      { id: 's8_t1', text: 'Go to ruben.substack.com and find the article titled "I am just a text file." (published January 2026)' },
-      { id: 's8_t2', text: 'Read the article — the Taste Interviewer prompt is inside it. Copy the entire prompt.' },
-      { id: 's8_t3', text: 'Open Claude in Chat mode (browser or desktop — Cowork is not needed for this step)' },
-      { id: 's8_t4', text: 'Make sure Claude Opus 4.6 is selected as the model' },
-      { id: 's8_t5', text: 'Start a new conversation and paste the full Taste Interviewer prompt' },
-      { id: 's8_t6', text: 'Answer all 100 questions honestly and in detail — don\'t rush, this is the most important part' },
-      { id: 's8_t7', text: 'After question 100, Claude compiles a full markdown document — copy all of it' },
-      { id: 's8_t8', text: 'Save that file in your ABOUT ME/ folder as "voice-profile.md"' },
+      { id: 's8_t1', text: 'Go to ruben.substack.com and find the article "Cowork." (published April 8, 2026)' },
+      { id: 's8_t2', text: 'Find the section "Step 1: Three core files in the ABOUT ME folder" → "File #1 — about-me" and copy the interview prompt' },
+      { id: 's8_t3', text: 'Open the Claude desktop app, go to Cowork, start a new task — confirm Opus 4.6 + Extended Thinking are selected' },
+      { id: 's8_t4', text: 'Paste the interview prompt into Cowork' },
+      { id: 's8_t5', text: 'Answer the 20 questions — for most, click the closest option; click "Something else" when you need to add specific detail' },
+      { id: 's8_t6', text: 'After question 20, Claude compiles everything into a condensed markdown file — copy all of it' },
+      { id: 's8_t7', text: 'Save that file to your ABOUT ME/ folder as "about-me.md"' },
     ],
-    links: [{ label: 'Read "I am just a text file." on Hassid\'s Substack', url: 'https://ruben.substack.com', style: 'orange' }],
-    tip: '💡 Pro tip: Use voice-to-text to answer questions out loud instead of typing. On Mac, press the Fn key twice to activate dictation. You\'ll give longer, more natural answers — the profile will capture how you actually communicate, not how you think you do.',
+    links: [{ label: 'Read "Cowork." on Hassid\'s Substack', url: 'https://ruben.substack.com', style: 'orange' }],
+    tip: '💡 Speaking your answers out loud produces richer, more natural responses. Use your phone\'s dictation or Mac\'s built-in dictation (press Fn twice). You\'ll capture how you actually communicate, not how you think you do.',
     note: '📌 Key insight from Hassid: 80% of your voice profile should be what you would NEVER say — not what you like. "I never use \'leverage\' as a verb" is far more useful to Claude than "I like a professional tone."',
+  },
+  {
+    id: 's8b',
+    num: '8b',
+    title: 'Build Your My-Company File (Optional)',
+    meta: 'Optional · 10 minutes · Recommended if you work beyond the classroom',
+    desc: 'Hassid\'s updated setup includes an optional third file in ABOUT ME: <strong>my-company.md</strong>. This file isn\'t about how you write — it\'s about what you\'re working toward. Your goals, your current priorities, what you\'re saying no to.<br><br><strong>Do you need this?</strong> If you use Claude primarily for classroom tasks — writing feedback, assignments, parent communications — your about-me.md alone is probably enough. If you do anything beyond the classroom — a TPT store, a side project, a career move — build this file. It\'s the difference between Claude helping you complete tasks and Claude helping you make decisions that point in the right direction.',
+    tasks: [
+      { id: 's8b_t1', text: 'Decide: if you use Claude only for classroom tasks, you can skip this — about-me.md is enough on its own' },
+      { id: 's8b_t2', text: 'Go to the "Cowork." article (April 8, 2026) and find "File #3 — my-company" in the ABOUT ME section' },
+      { id: 's8b_t3', text: 'Copy the interview prompt and paste it into the same Cowork session (right after finishing about-me.md if possible)' },
+      { id: 's8b_t4', text: 'Answer the 6–8 questions about your goals and priorities' },
+      { id: 's8b_t5', text: 'Save the output to your ABOUT ME/ folder as "my-company.md"' },
+    ],
+    links: [{ label: 'Read "Cowork." on Hassid\'s Substack', url: 'https://ruben.substack.com', style: 'orange' }],
+    tip: '💡 This takes about 10 minutes. Run it in the same Cowork session right after about-me.md. It\'s a small investment that makes every strategic task significantly sharper.',
   },
   {
     id: 's9',
     title: "Get Hassid's Anti-AI Writing Style File",
     meta: 'Free download · ruben.substack.com · 5 minutes',
-    desc: 'Your voice profile tells Claude who you are. This file tells Claude what <em>AI writing</em> sounds like — so it knows exactly what to avoid. The filler words, the fake enthusiasm, the patterns that make everything sound like it was generated by the same robot. Hassid built this and gives it away for free.',
+    desc: 'Your about-me.md tells Claude who you are. This file tells Claude what <em>AI writing</em> sounds like — so it knows exactly what to avoid. The filler words, the fake enthusiasm, the patterns that make everything sound like it was generated by the same robot. Hassid built this and gives it away for free.',
     tasks: [
       { id: 's9_t1', text: 'Go to ruben.substack.com and subscribe (free) to his newsletter "How to AI"' },
       { id: 's9_t2', text: 'Check your inbox for the welcome email and open it' },
       { id: 's9_t3', text: 'Inside the welcome email, find the link to his Prompt Library (a Notion document)' },
       { id: 's9_t4', text: 'Open the Notion doc and find the Anti-AI Writing Style file' },
       { id: 's9_t5', text: 'Download it as a markdown file (.md) — in Notion: File → Export → Markdown' },
-      { id: 's9_t6', text: 'Save the file to your ABOUT ME/ folder alongside voice-profile.md' },
+      { id: 's9_t6', text: 'Save the file to your ABOUT ME/ folder alongside about-me.md' },
     ],
     links: [{ label: "Subscribe to Hassid's Newsletter (Free)", url: 'https://ruben.substack.com', style: 'orange' }],
-    tip: '💡 Your ABOUT ME folder now has two powerful files: one that says who you are, and one that says what AI writing sounds like so Claude avoids it. Together they dramatically improve every output.',
+    tip: '💡 Your ABOUT ME folder now has two (or three) files working together before every task. Keep the total under 6,000 tokens — every sentence should earn its place.',
   },
   {
     id: 's10',
@@ -591,7 +605,7 @@ const STEPS = [
     meta: 'Cowork mode · The formula you\'ll use every time',
     desc: 'Now you test the system. The key to great output is <strong>not</strong> writing a clever prompt — it\'s giving Claude the task and success criteria, then letting Claude ask <em>you</em> clarifying questions before it starts. This is the feature that changes everything.',
     tasks: [
-      { id: 's10_t1', text: 'Inside your PROJECTS/ folder, create a subfolder for something you\'re actually working on (e.g. "Parent-Newsletter" or "Unit-Plan")' },
+      { id: 's10_t1', text: 'Inside your OUTPUTS/ folder, create a subfolder for something you\'re actually working on (e.g. "Parent-Newsletter" or "Unit-Plan")' },
       { id: 's10_t2', text: 'Drop any relevant reference material into that subfolder (previous examples, notes, brief)' },
       { id: 's10_t3', text: 'Open the Claude desktop app and confirm your CLAUDE COWORK folder is still selected in Cowork' },
       { id: 's10_t4', text: 'Type a prompt using the formula shown below' },
@@ -614,33 +628,46 @@ all families feel informed and excited, regardless of their reading level.
 First, explore my CLAUDE COWORK folder. Then, ask me clarifying questions.
 I want to refine the approach with you before you execute.`,
     },
-    tip: '💡 The phrase "ask me clarifying questions" is the key. Instead of you trying to write a perfect prompt, Claude asks what it needs to know. If the output doesn\'t sound right, that\'s feedback — go back to your voice profile and add what\'s missing.',
+    tip: '💡 The phrase "ask me clarifying questions" is the key. Instead of writing a perfect prompt, Claude asks what it needs to know. If the output doesn\'t sound right, go back to about-me.md and add what\'s missing.',
   },
   {
     id: 's11',
-    title: 'Build Your Template Library (Over Time)',
-    meta: 'Ongoing · TEMPLATES/ folder · Add as you go — don\'t force it',
-    desc: 'Don\'t try to build templates on day one. Instead, as you produce work you\'re proud of, save the structure to your TEMPLATES folder. Claude will use these as patterns for future work. The more templates you build over time, the less you have to explain.',
+    title: 'Use Your Credits Wisely',
+    meta: 'Ongoing · Pro token budget · Four habits that matter',
+    desc: 'Pro gives you a token budget. Tokens are the currency Claude uses to read, think, and write. These four habits will keep you from burning through your budget in the first week.',
     tasks: [
-      { id: 's11_t1', text: 'Understand the difference: a template saves the structure (the "how"), never the content (the "what")' },
-      { id: 's11_t2', text: 'After finishing a piece of writing you\'re genuinely proud of, strip out the specific content and save the skeleton to TEMPLATES/' },
-      { id: 's11_t3', text: 'Name templates clearly — e.g. "template_parent-email.md" or "template_unit-intro.md"' },
-      { id: 's11_t4', text: 'Build templates gradually as you go — good templates come from good work, not the other way around' },
+      { id: 's11_t1', text: 'Restart instead of correcting: when something goes wrong, click "Restart the conversation from here" on the last good message — don\'t keep correcting in the same session (by message 30, every reply costs 31x more than message 1)' },
+      { id: 's11_t2', text: 'Batch related tasks: write one prompt with three tasks instead of three separate prompts — each new message forces Claude to re-read the entire conversation history' },
+      { id: 's11_t3', text: 'Use Sonnet 4.6 for simple tasks: grammar checks, formatting, quick answers — save Opus + Extended Thinking for writing, analysis, and planning' },
+      { id: 's11_t4', text: 'Keep ABOUT ME lean: target under 6,000 tokens total across all files — every sentence should carry information Claude actually needs' },
     ],
-    tip: '💡 A great template is the skeleton of your best work. If you wrote a parent email that perfectly nailed the tone, strip out the names and details, keep the structure, and save it. Claude will use it as a pattern every time.',
+    tip: '💡 The restart habit alone will dramatically extend your monthly budget. Starting fresh on the last good message costs far less than correcting endlessly in the same thread.',
   },
   {
     id: 's12',
-    title: 'Refine Your Voice Profile (Ongoing)',
-    meta: 'Ongoing · Living document · Gets better with every use',
-    desc: 'Your voice profile is not a finished document — it\'s a living record. Every time Claude misses the mark, that\'s useful information. Go back to voice-profile.md and add what was missing. Within a month, Claude will rarely miss.',
+    title: 'Build Your Template Library (Over Time)',
+    meta: 'Ongoing · TEMPLATES/ folder · Claude manages this automatically',
+    desc: 'Don\'t try to build templates on day one. As you produce work you\'re proud of, just say <strong>"save this as a template in TEMPLATES/"</strong> at the end of the session. Claude strips the content, keeps the structure, and saves it automatically. You don\'t manage this folder — you just point Claude to it.',
     tasks: [
-      { id: 's12_t1', text: 'When output doesn\'t sound quite right, identify specifically what feels off' },
-      { id: 's12_t2', text: 'Open voice-profile.md in your ABOUT ME/ folder and add the missing detail' },
-      { id: 's12_t3', text: 'Be specific with rejections: "never say \'leverage\' as a verb" beats "I prefer a professional tone"' },
-      { id: 's12_t4', text: 'Plan to revisit and update the profile every few weeks — it compounds over time' },
+      { id: 's12_t1', text: 'Understand the difference: a template saves the structure (the "how"), never the content (the "what")' },
+      { id: 's12_t2', text: 'At the end of a session with output you\'re proud of, say: "Save this as a template in TEMPLATES/ — strip the specific content, keep the structure"' },
+      { id: 's12_t3', text: 'Claude names and saves it automatically — you don\'t need to manage this folder manually' },
+      { id: 's12_t4', text: 'When starting a relevant task, say: "Check TEMPLATES/ for a matching structure before you start"' },
     ],
-    tip: '💡 The profile gets exponentially more powerful over time. Every correction you add makes future output better. This is what makes Claude feel like a genuine working partner rather than a generic tool.',
+    tip: '💡 Templates compound over time. The more you build, the less you explain. Within a month of regular use, Claude will be pulling from your best work automatically.',
+  },
+  {
+    id: 's13',
+    title: 'Refine Your Voice Profile (Ongoing)',
+    meta: 'Ongoing · Living document · Gets better with every correction',
+    desc: 'Your about-me.md is not a finished document — it\'s a living record. Every time Claude misses the mark, that\'s useful information. Go back to about-me.md, add what\'s missing, and trim anything vague. Within a month, Claude will rarely miss.',
+    tasks: [
+      { id: 's13_t1', text: 'When output doesn\'t sound quite right, identify specifically what feels off' },
+      { id: 's13_t2', text: 'Open about-me.md in your ABOUT ME/ folder and add the missing detail' },
+      { id: 's13_t3', text: 'Be specific with rejections: "never say \'leverage\' as a verb" beats "I prefer a professional tone"' },
+      { id: 's13_t4', text: 'Keep the file lean — add precisely and trim anything vague or redundant, staying under 2,000 tokens' },
+    ],
+    tip: '💡 Specific rejections are worth 10x more than vague preferences — and a lean file Claude reads carefully beats a bloated file it skims. Quality over quantity, always.',
   },
 ];
 
@@ -665,7 +692,7 @@ function renderSteps() {
     card.className = 'step-card' + (allDone ? ' completed' : started ? ' in-progress' : '');
     card.id = step.id;
 
-    const numIcon = allDone ? '✓' : (idx + 1);
+    const numIcon = allDone ? '✓' : (step.num ?? (idx + 1));
 
     // ── build checklist html ──
     let checklistHtml = '<ul class="checklist">';
@@ -735,7 +762,7 @@ function renderSteps() {
       <div class="step-header" onclick="toggleStep('${step.id}')">
         <div class="step-num">${numIcon}</div>
         <div class="step-info">
-          <div class="step-title">Step ${idx+1}: ${step.title}</div>
+          <div class="step-title">Step ${step.num ?? (idx+1)}: ${step.title}</div>
           <div class="step-meta">${step.meta}</div>
         </div>
         <div class="step-right">
@@ -821,7 +848,7 @@ function updateStepCard(stepId) {
   const idx   = STEPS.indexOf(step);
 
   card.querySelector('.step-pill').textContent = `${done}/${total}`;
-  card.querySelector('.step-num').textContent   = done === total ? '✓' : (idx + 1);
+  card.querySelector('.step-num').textContent   = done === total ? '✓' : (step.num ?? (idx + 1));
 
   card.classList.remove('completed','in-progress');
   if (done === total)          card.classList.add('completed');
